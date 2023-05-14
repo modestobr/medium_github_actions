@@ -1,3 +1,5 @@
+import pytest
+import os
 import train_model
 
 def test_load_dataset_exists():
@@ -26,3 +28,24 @@ def test_save_model_exists():
     Se o método não existir, o teste falhará com uma mensagem indicando que o método save_model não existe.
     """
     assert hasattr(train_model, 'save_model'), "O método save_model não existe"
+
+@pytest.fixture(scope="module")
+def train_and_save_model():
+    """
+    Fixture para treinar e salvar o modelo antes de executar o teste test_model_file_exists.
+
+    Esta função chama a função main() do módulo train para treinar e salvar o modelo.
+    Após o término do teste, remove o arquivo 'model.pkl'.
+    """
+    train_model.main()
+    yield
+    os.remove('model.pkl')
+
+def test_model_file_exists(train_and_save_model):
+    """
+    Testa se o arquivo model.pkl foi salvo corretamente.
+
+    Este teste, que depende da fixture train_and_save_model, verificará a existência do arquivo model.pkl no diretório atual.
+    Se o arquivo não existir, o teste falhará com uma mensagem indicando que o arquivo model.pkl não foi salvo corretamente.
+    """
+    assert os.path.isfile('model.pkl'), "O arquivo model.pkl não foi salvo corretamente"
