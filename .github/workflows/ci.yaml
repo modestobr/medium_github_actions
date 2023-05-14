@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: CI/CD Example
 
 # Controls when the workflow will run
 on:
@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  CI:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -26,17 +26,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.8.x'
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Run Hello
+        run: echo Hello, Medium!
 
       - name: Install dependencies
         run: |
@@ -45,12 +39,19 @@ jobs:
 
       - name: Run pre model training tests
         run: |
-          pytest tests/unit_tests_train_methods.py
-
-      #- name: Train model
-      #  run: |
-      #    python train_model.py
+          pytest tests/unit_test_train_model_methods.py
 
       - name: Run post model training tests
         run: |
-          pytest tests/unit_test_train_result.py
+          pytest tests/unit_test_train_model_saving.py
+
+  CD:
+    needs: CI
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Train model
+        run: |
+          python train_model.py

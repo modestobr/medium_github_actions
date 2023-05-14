@@ -1,0 +1,5 @@
+- criar conta no github
+- criar um repositorio, a pasta .github/workflows
+- criar o arquiv ci.yaml
+- criar o arquivo de treino
+- criar o arquivo de teste simples
