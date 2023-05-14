@@ -26,11 +26,13 @@ jobs:
       - name: Run Hello
         run: echo Hello, Medium!
 
+      # Install Python packages dependencies from requirements.txt file
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Execute unit tests for train_model.py script
       - name: Run model training unit tests
         run: |
           python -m pytest tests/unit_test_train_model.py
@@ -47,10 +49,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.8.x'
-
-      # Runs a single command using the runners shell
-      - name: Run Hello
-        run: echo Hello, Medium!
 
       - name: Install dependencies
         run: |
