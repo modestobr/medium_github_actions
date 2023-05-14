@@ -37,6 +37,16 @@ def train_model(X : np.array, y : np.array) -> RandomForestClassifier:
 
     return model
 
+def save_model(model, filepath):
+    """
+    Salva o modelo treinado em um arquivo pickle.
+
+    Parâmetros:
+    model (qualquer): O modelo treinado para ser salvo.
+    filepath (str): O caminho do arquivo onde o modelo treinado será salvo.
+    """
+    with open(filepath, 'wb') as f:
+        pickle.dump(model, f)
 
 def main():
     """
@@ -48,6 +58,7 @@ def main():
     """
     X, y = load_dataset()
     model = train_model(X, y)
+    save_model(model, 'model.pkl')
     
     return 
 
