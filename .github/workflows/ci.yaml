@@ -45,7 +45,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest my_custom_tests
+          pytest my_custom_tests.py
 
       - name: Train model
         run: |
