@@ -27,7 +27,10 @@ def train_model(X : np.array, y : np.array) -> RandomForestClassifier:
     """
 
     # Definir o modelo
-    model = RandomForestClassifier(n_estimators = 2, max_depth = 1, random_state = 1)
+    model = RandomForestClassifier(n_estimators = 15, 
+                                   max_depth = 3, 
+                                   n_neighbors = 120, 
+                                   random_state = 1)
 
     # Treinar o modelo
     model = model.fit(X, y)
@@ -58,10 +61,9 @@ def main():
     """
     X, y = load_dataset()
     model = train_model(X, y)
-    save_model(model, 'model.pkl')
+    save_model(model, 'my_beautiful_model.pkl')
     
     return 
-
 
 if __name__ == "__main__":
     main()
