@@ -43,10 +43,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Run pre model training tests
         run: |
-          pytest my_custom_tests.py
+          pytest tests/unit_tests_train_methods.py
 
-      - name: Train model
+      #- name: Train model
+      #  run: |
+      #    python train_model.py
+
+      - name: Run post model training tests
         run: |
-          python train_model.py
+          pytest tests/unit_test_train_result.py

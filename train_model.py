@@ -1,67 +1,52 @@
+from sklearn.datasets import load_wine
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.datasets import fetch_openml
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
+import numpy as np
+import pickle
 
 def load_dataset():
     """
-    Carrega o conjunto de dados Titanic do Scikit-Learn.
+    Carrega o conjunto de dados Wine do Scikit-Learn.
 
     Retorna:
-    X (DataFrame): Dados de entrada.
-    y (Series): Rótulos de destino.
+    X (np.array): Dados de entrada.
+    y (np.array): Rótulos de destino.
     """
-    X, y = fetch_openml("titanic", version=1, as_frame=True, return_X_y=True)
+    X, y = load_wine(return_X_y = True)
     return X, y
 
-def train_model(X, y):
+def train_model(X : np.array, y : np.array) -> RandomForestClassifier:
     """
-    Treina um modelo de floresta aleatória no conjunto de dados Titanic.
+    Treina um modelo de floresta aleatória no conjunto de dados Wine.
 
     Parâmetros:
-    X (DataFrame): Dados de entrada.
-    y (Series): Rótulos de destino.
+    X (np.array): Dados de entrada.
+    y (np.array): Rótulos de destino.
 
     Retorna:
     model (RandomForestClassifier): O modelo treinado.
     """
-    # Dividir os dados em conjuntos de treinamento e teste
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    # Pré-processamento
-    numeric_features = ['age', 'fare']
-    categorical_features = ['embarked', 'sex', 'pclass']
-
-    numeric_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='median'))
-    ])
-
-    categorical_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-        ('onehot', OneHotEncoder(handle_unknown='ignore'))
-    ])
-
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('num', numeric_transformer, numeric_features),
-            ('cat', categorical_transformer, categorical_features)])
 
     # Definir o modelo
-    model = Pipeline(steps=[('preprocessor', preprocessor),
-                            ('classifier', RandomForestClassifier())])
+    model = RandomForestClassifier(n_estimators = 2, max_depth = 1, random_state = 1)
 
     # Treinar o modelo
-    model.fit(X_train, y_train)
+    model = model.fit(X, y)
 
-    # Avaliar o modelo
-    y_pred = model.predict(X_test)
-    print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+    # Avaliar o treinamento do modelo
+    print(f"Training Mean Accuracy: {model.score(X, y)}")
 
     return model
+
+def save_model(model, filepath):
+    """
+    Salva o modelo treinado em um arquivo pickle.
+
+    Parâmetros:
+    model (qualquer): O modelo treinado para ser salvo.
+    filepath (str): O caminho do arquivo onde o modelo treinado será salvo.
+    """
+    with open(filepath, 'wb') as f:
+        pickle.dump(model, f)
 
 def main():
     """
@@ -73,7 +58,7 @@ def main():
     """
     X, y = load_dataset()
     model = train_model(X, y)
-    print(model)
+    save_model(model, 'model.pkl')
     
     return 
 

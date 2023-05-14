@@ -1,4 +1,3 @@
-import pytest
 import train_model
 
 def test_load_dataset_exists():
@@ -18,3 +17,12 @@ def test_train_model_exists():
     Se o método não existir, o teste falhará com uma mensagem indicando que o método train_model não existe.
     """
     assert hasattr(train_model, 'train_model'), "O método train_model não existe"
+
+def test_save_model_exists():
+    """
+    Testa se o método save_model existe no módulo train.
+
+    Este teste verificará a existência do método save_model no módulo train.
+    Se o método não existir, o teste falhará com uma mensagem indicando que o método save_model não existe.
+    """
+    assert hasattr(train_model, 'save_model'), "O método save_model não existe"
