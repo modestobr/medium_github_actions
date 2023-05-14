@@ -39,11 +39,11 @@ jobs:
 
       - name: Run pre model training tests
         run: |
-          pytest tests/unit_test_train_model_methods.py
+          python -m pytest tests/unit_test_train_model_methods.py
 
       - name: Run post model training tests
         run: |
-          pytest tests/unit_test_train_model_saving.py
+          python -m pytest tests/unit_test_train_model_saving.py
 
   CD:
     needs: CI
